@@ -1,0 +1,1 @@
+import"./rolldown-runtime-Bh1tDfsg.js";import{V as e,t}from"./react-vendor-Bm9aTqMW.js";import{n,t as r}from"./productsData-pYq3IPnH.js";e();var i=t(),a=()=>(0,i.jsx)(n,{data:r.rugs});export{a as Rugs,a as default};
