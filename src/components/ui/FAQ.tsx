@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Minus } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { ChevronDown } from 'lucide-react';
+import { animate } from 'animejs';
 
 interface FAQItemProps {
   question: string;
@@ -9,39 +9,97 @@ interface FAQItemProps {
 
 const FAQItem: React.FC<FAQItemProps> = ({ question, answer }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const iconRef = useRef<HTMLDivElement | null>(null);
+  const isFirstMount = useRef(true);
+
+  useEffect(() => {
+    if (!contentRef.current || !iconRef.current) return;
+    const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Prevent animation on initial render when element is closed
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      if (!isOpen) {
+        animate(contentRef.current, { height: '0px', opacity: 0, duration: 0 });
+        animate(iconRef.current, { rotate: 0, duration: 0 });
+        return;
+      }
+    }
+
+    if (isOpen) {
+      const height = contentRef.current.scrollHeight;
+      
+      if (isReduced) {
+        contentRef.current.style.height = `${height}px`;
+        contentRef.current.style.opacity = '1';
+        iconRef.current.style.transform = 'rotate(180deg)';
+        return;
+      }
+
+      animate(contentRef.current, {
+        height: [0, height],
+        opacity: [0, 1],
+        duration: 350,
+        easing: 'easeOutQuart'
+      });
+      animate(iconRef.current, {
+        rotate: 180,
+        duration: 300,
+        easing: 'easeOutQuart'
+      });
+    } else {
+      if (isReduced) {
+        contentRef.current.style.height = '0px';
+        contentRef.current.style.opacity = '0';
+        iconRef.current.style.transform = 'rotate(0deg)';
+        return;
+      }
+
+      animate(contentRef.current, {
+        height: 0,
+        opacity: 0,
+        duration: 350,
+        easing: 'easeOutQuart'
+      });
+      animate(iconRef.current, {
+        rotate: 0,
+        duration: 300,
+        easing: 'easeOutQuart'
+      });
+    }
+  }, [isOpen]);
 
   return (
     <div 
       className="faq-item" 
       onClick={() => setIsOpen(!isOpen)}
-      style={{ cursor: 'pointer' }}
+      style={{ cursor: 'pointer', overflow: 'hidden' }}
     >
       <div className="faq-item-title-row">
-        <h3>{question}</h3>
-        <div className="faq-icon-wrapper">
-          {isOpen ? (
-            <Minus size={18} style={{ color: 'var(--cls-gold)' }} />
-          ) : (
-            <Plus size={18} style={{ color: 'var(--cls-taupe)' }} />
-          )}
+        <h3 style={{ userSelect: 'none' }}>{question}</h3>
+        <div 
+          ref={iconRef} 
+          className="faq-icon-wrapper" 
+          style={{ 
+            display: 'inline-flex', 
+            transformOrigin: 'center', 
+            justifyContent: 'center', 
+            alignItems: 'center' 
+          }}
+        >
+          <ChevronDown size={18} style={{ color: isOpen ? 'var(--cls-gold)' : 'var(--cls-taupe)' }} />
         </div>
       </div>
 
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.35, ease: [0.25, 1, 0.5, 1] }}
-            style={{ overflow: 'hidden' }}
-          >
-            <p className="faq-answer">
-              {answer}
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div
+        ref={contentRef}
+        style={{ height: 0, opacity: 0, overflow: 'hidden' }}
+      >
+        <p className="faq-answer">
+          {answer}
+        </p>
+      </div>
     </div>
   );
 };
@@ -78,4 +136,5 @@ export const FAQ: React.FC = () => {
     </div>
   );
 };
+
 export default FAQ;

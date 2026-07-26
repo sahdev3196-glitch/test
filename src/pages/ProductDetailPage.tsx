@@ -260,7 +260,7 @@ const PRODUCT_DATABASE: Record<string, ProductData> = {
     metaDesc: 'Get SPC PVC vinyl flooring in Pune. Waterproof, click-lock planks ideal for high-traffic office floors, kitchens, and retail zones. Request a quote.',
     headline: 'SPC PVC Vinyl Waterproof Flooring Planks in Pune',
     tagline: 'High-Performance Utility Floors',
-    image: '/assets/images/pvc_flooring.jpg',
+    image: '/assets/images/wooden_flooring.jpg',
     description: 'Discover durable, waterproof PVC and Stone Plastic Composite (SPC) vinyl flooring in Pune. Engineered to withstand high commercial traffic and moisture.',
     keywords: ['pvc flooring pune', 'spc flooring pune', 'vinyl flooring planks pune', 'waterproof flooring pune', 'commercial office flooring'],
     features: [
