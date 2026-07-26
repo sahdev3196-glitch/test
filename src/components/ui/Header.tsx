@@ -1,14 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { NavLink, Link, useLocation } from 'react-router-dom';
 import { X } from 'lucide-react';
+import { animate } from 'animejs';
 
 export const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
+  const headerRef = useRef<HTMLElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  
   const location = useLocation();
-  const navigate = useNavigate();
 
+  // 1. Entry Animation: Fade in from top
+  useEffect(() => {
+    const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!isReduced && headerRef.current) {
+      animate(headerRef.current, { opacity: 0, translateY: -20, duration: 0 });
+      animate(headerRef.current, {
+        opacity: [0, 1],
+        translateY: [-20, 0],
+        duration: 800,
+        easing: 'easeOutExpo'
+      });
+    }
+  }, []);
+
+  // 2. Scroll monitoring
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -22,6 +40,41 @@ export const Header: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // 3. Scroll scroll-responsive styling animations via Anime.js
+  useEffect(() => {
+    if (!headerRef.current || !containerRef.current) return;
+    const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isReduced) return;
+
+    if (isScrolled) {
+      animate(headerRef.current, {
+        backgroundColor: 'rgba(250, 249, 246, 0.98)',
+        boxShadow: '0 10px 40px rgba(0, 0, 0, 0.04)',
+        duration: 300,
+        easing: 'easeOutQuad'
+      });
+      animate(containerRef.current, {
+        paddingTop: '1rem',
+        paddingBottom: '1rem',
+        duration: 300,
+        easing: 'easeOutQuad'
+      });
+    } else {
+      animate(headerRef.current, {
+        backgroundColor: 'rgba(250, 249, 246, 0.85)',
+        boxShadow: '0 10px 40px rgba(0, 0, 0, 0)',
+        duration: 300,
+        easing: 'easeOutQuad'
+      });
+      animate(containerRef.current, {
+        paddingTop: '1.5rem',
+        paddingBottom: '1.5rem',
+        duration: 300,
+        easing: 'easeOutQuad'
+      });
+    }
+  }, [isScrolled]);
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -30,46 +83,14 @@ export const Header: React.FC = () => {
     setIsMenuOpen(false);
   };
 
-  const handleNavClick = (sectionId: string, event?: React.MouseEvent) => {
-    if (event) {
-      event.preventDefault();
-    }
-    closeMenu();
-    
-    if (location.pathname === '/') {
-      if (sectionId === 'home') {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }
-    } else {
-      // Navigate to homepage first
-      navigate('/');
-      // Once homepage mounts, scroll to the section
-      setTimeout(() => {
-        if (sectionId === 'home') {
-          window.scrollTo({ top: 0 });
-        } else {
-          const element = document.getElementById(sectionId);
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-          }
-        }
-      }, 150);
-    }
-  };
-
   return (
-    <header className={`main-header ${isScrolled ? 'scrolled' : ''}`}>
-      <div className="header-container">
+    <header ref={headerRef} className="main-header" style={{ borderBottom: '1px solid rgba(28, 28, 28, 0.05)', transition: 'none' }}>
+      <div ref={containerRef} className="header-container" style={{ transition: 'none' }}>
         <Link 
           to="/" 
           className="logo-brand" 
           aria-label="Urban Frill Home" 
-          onClick={(e) => handleNavClick('home', e)}
+          onClick={closeMenu}
         >
           Urban <span>Frill</span>
         </Link>
@@ -85,23 +106,75 @@ export const Header: React.FC = () => {
             <X size={24} style={{ color: '#1C1C1C' }} />
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-              <span className="hamburger-bar" style={{ transform: isMenuOpen ? 'translateY(7px) rotate(45deg)' : 'none' }}></span>
-              <span className="hamburger-bar" style={{ opacity: isMenuOpen ? 0 : 1 }}></span>
-              <span className="hamburger-bar" style={{ transform: isMenuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }}></span>
+              <span className="hamburger-bar"></span>
+              <span className="hamburger-bar"></span>
+              <span className="hamburger-bar"></span>
             </div>
           )}
         </button>
 
         <nav id="primary-nav" className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
           <ul>
-            <li><Link to="/" onClick={(e) => handleNavClick('home', e)}>Home</Link></li>
-            <li><Link to="/" onClick={(e) => handleNavClick('about', e)}>About</Link></li>
-            <li><Link to="/" onClick={(e) => handleNavClick('products', e)}>Products</Link></li>
-            <li><Link to="/" onClick={(e) => handleNavClick('faq', e)}>FAQ</Link></li>
-            <li><Link to="/" onClick={(e) => handleNavClick('contact', e)}>Contact</Link></li>
+            <li>
+              <NavLink 
+                to="/" 
+                end 
+                onClick={closeMenu}
+                className={({ isActive }) => isActive ? 'active' : ''}
+              >
+                Home
+              </NavLink>
+            </li>
+            <li>
+              <NavLink 
+                to="/about" 
+                onClick={closeMenu}
+                className={({ isActive }) => isActive ? 'active' : ''}
+              >
+                About
+              </NavLink>
+            </li>
+            <li>
+              <NavLink 
+                to="/products" 
+                onClick={closeMenu}
+                className={({ isActive }) => isActive || location.pathname.startsWith('/products') ? 'active' : ''}
+              >
+                Products <span style={{ fontSize: '0.65rem', marginLeft: '2px', display: 'inline-block', transform: 'translateY(-1px)' }}>▼</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink 
+                to="/projects" 
+                onClick={closeMenu}
+                className={({ isActive }) => isActive ? 'active' : ''}
+              >
+                Projects
+              </NavLink>
+            </li>
+            <li>
+              <NavLink 
+                to="/faq" 
+                onClick={closeMenu}
+                className={({ isActive }) => isActive ? 'active' : ''}
+              >
+                FAQ
+              </NavLink>
+            </li>
+            <li>
+              <NavLink 
+                to="/contact" 
+                onClick={closeMenu}
+                className={({ isActive }) => isActive ? 'active' : ''}
+              >
+                Contact
+              </NavLink>
+            </li>
           </ul>
         </nav>
       </div>
     </header>
   );
 };
+
+export default Header;

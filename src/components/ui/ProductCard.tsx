@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import playCardHover from '../../animations/hoverAnimations';
 
 interface ProductCardProps {
   title: string;
@@ -10,33 +10,19 @@ interface ProductCardProps {
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ title, description, image, slug }) => {
-  // Motion values for mouse position
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
+  const cardRef = useRef<HTMLDivElement | null>(null);
+  const imgRef = useRef<HTMLImageElement | null>(null);
 
-  // Translate mouse coordinate relative to card center to rotation degrees
-  const rotateX = useTransform(y, [-0.5, 0.5], [6, -6]);
-  const rotateY = useTransform(x, [-0.5, 0.5], [-8, 8]);
-
-  // Lighting sheen gradient translation
-  const sheenX = useTransform(x, [-0.5, 0.5], ['0%', '100%']);
-  const sheenY = useTransform(y, [-0.5, 0.5], ['0%', '100%']);
-
-  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = event.clientX - rect.left;
-    const mouseY = event.clientY - rect.top;
-    
-    // Normalize coordinates between -0.5 and 0.5
-    x.set((mouseX / width) - 0.5);
-    y.set((mouseY / height) - 0.5);
+  const handleMouseEnter = () => {
+    if (cardRef.current) {
+      playCardHover(cardRef.current, imgRef.current, true);
+    }
   };
 
   const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
+    if (cardRef.current) {
+      playCardHover(cardRef.current, imgRef.current, false);
+    }
   };
 
   return (
@@ -46,55 +32,54 @@ export const ProductCard: React.FC<ProductCardProps> = ({ title, description, im
         style={{ display: 'block', height: '100%', color: 'inherit', textDecoration: 'none' }}
         title={`Explore premium ${title} collections in Pune`}
       >
-        <motion.article
+        <div
+          ref={cardRef}
           className="product-card"
-          onMouseMove={handleMouseMove}
+          onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           style={{
-            rotateX,
-            rotateY,
-            transformStyle: 'preserve-3d',
+            background: 'var(--cls-pure-white)',
+            borderRadius: 'var(--border-radius-lux)',
+            overflow: 'hidden',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            boxShadow: '0 10px 30px rgba(28, 28, 28, 0.04)',
+            transform: 'translateY(0px)'
           }}
-          whileHover={{
-            y: -10,
-            scale: 1.02,
-            boxShadow: '0 30px 80px rgba(28, 28, 28, 0.15)',
-          }}
-          transition={{ type: 'spring', stiffness: 350, damping: 25 }}
         >
-          {/* Card Sheen Lighting Layer */}
-          <motion.div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              background: `radial-gradient(circle at ${sheenX} ${sheenY}, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 70%)`,
-              zIndex: 3,
-              pointerEvents: 'none',
-              mixBlendMode: 'overlay',
-            }}
-          />
-
           {/* Product Image Wrapper */}
-          <div className="product-img-wrapper" style={{ transform: 'translateZ(30px)' }}>
+          <div className="product-img-wrapper" style={{ overflow: 'hidden', aspectRatio: '4/3' }}>
             <img 
+              ref={imgRef}
               src={image} 
               alt={`Premium ${title} catalog showcase by Urban Frill Pune`} 
               width="600" 
               height="450" 
+              style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'scale(1)' }}
               loading="lazy" 
             />
           </div>
 
           {/* Card Body */}
-          <div className="product-card-body" style={{ transform: 'translateZ(20px)' }}>
-            <h3>{title}</h3>
-            <p>{description}</p>
-            <span className="btn-card-link">
-              Explore Collection
+          <div className="product-card-body" style={{ padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+            <span className="section-tagline" style={{ fontSize: '0.75rem', color: 'var(--cls-gold)', marginBottom: '0.5rem', display: 'block', fontWeight: 600 }}>
+              LUXURY COLLECTION
+            </span>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 400, color: 'var(--cls-charcoal)', marginBottom: '0.75rem' }}>
+              {title}
+            </h3>
+            <p style={{ fontSize: '0.9rem', color: 'var(--cls-text-muted)', fontWeight: 300, lineHeight: 1.6, marginBottom: '1.5rem', flex: 1 }}>
+              {description}
+            </p>
+            <span className="btn-card-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--cls-gold)', fontSize: '0.85rem', fontWeight: 500 }}>
+              Explore Collection <span style={{ transition: 'transform 0.3s' }}>→</span>
             </span>
           </div>
-        </motion.article>
+        </div>
       </Link>
     </div>
   );
 };
+
+export default ProductCard;

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { animate, createTimeline } from 'animejs';
 
 const SLIDES = [
   {
@@ -25,7 +25,8 @@ const SLIDES = [
 
 export const HeroCarousel: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(0); // -1 for left, 1 for right
+  const textRef = useRef<HTMLDivElement | null>(null);
+  const imgRef = useRef<HTMLImageElement | null>(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -33,65 +34,63 @@ export const HeroCarousel: React.FC = () => {
     }, 6000); // Change slide every 6 seconds
 
     return () => clearInterval(timer);
+  }, []);
+
+  // Slide transition animation using Anime.js
+  useEffect(() => {
+    if (!textRef.current || !imgRef.current) return;
+    
+    const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const textElements = Array.from(textRef.current.children);
+
+    if (isReduced) {
+      animate(textElements, { opacity: 1, translateY: 0, duration: 0 });
+      animate(imgRef.current, { opacity: 1, scale: 1.06, duration: 0 });
+      return;
+    }
+
+    const tl = createTimeline({
+      easing: 'easeOutExpo'
+    });
+
+    // Animate details (tagline, title, description, buttons)
+    tl.add(textElements, {
+      opacity: [0, 1],
+      translateY: [15, 0],
+      duration: 800,
+      delay: (_el: any, i: number) => i * 80
+    });
+
+    // Settle image (opacity and scale drift)
+    tl.add(imgRef.current, {
+      opacity: [0.3, 1],
+      scale: [1.03, 1.06],
+      duration: 1200
+    }, '-=600');
   }, [currentIndex]);
 
   const handleNext = () => {
-    setDirection(1);
     setCurrentIndex((prevIndex) => (prevIndex + 1) % SLIDES.length);
   };
 
   const handlePrev = () => {
-    setDirection(-1);
     setCurrentIndex((prevIndex) => (prevIndex - 1 + SLIDES.length) % SLIDES.length);
-  };
-
-  const imageVariants = {
-    enter: (dir: number) => ({
-      opacity: 0,
-      x: dir > 0 ? 30 : -30,
-    }),
-    center: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        x: { type: 'spring' as const, stiffness: 150, damping: 20 },
-        opacity: { duration: 0.6 },
-      },
-    },
-    exit: (dir: number) => ({
-      opacity: 0,
-      x: dir < 0 ? 30 : -30,
-      transition: {
-        x: { type: 'spring' as const, stiffness: 150, damping: 20 },
-        opacity: { duration: 0.6 },
-      },
-    }),
   };
 
   return (
     <div className="hero-split-container">
       {/* 1. Left Side: Text Details */}
       <div className="hero-left-col">
-        <div className="hero-text-content-wrapper">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentIndex}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.4, ease: 'easeOut' }}
-            >
-              <p className="section-tagline" style={{ color: 'var(--cls-gold)', fontWeight: 600 }}>
-                {SLIDES[currentIndex].tagline}
-              </p>
-              <h1 style={{ color: 'var(--cls-charcoal)', fontWeight: 300, lineHeight: 1.2 }}>
-                {SLIDES[currentIndex].title}
-              </h1>
-              <p style={{ fontSize: '1.05rem', color: 'var(--cls-text-muted)', maxWidth: '460px', lineHeight: '1.65', fontWeight: 300, marginBottom: '2rem' }}>
-                {SLIDES[currentIndex].description}
-              </p>
-            </motion.div>
-          </AnimatePresence>
+        <div ref={textRef} className="hero-text-content-wrapper">
+          <p className="section-tagline" style={{ color: 'var(--cls-gold)', fontWeight: 600 }}>
+            {SLIDES[currentIndex].tagline}
+          </p>
+          <h1 style={{ color: 'var(--cls-charcoal)', fontWeight: 300, lineHeight: 1.2 }}>
+            {SLIDES[currentIndex].title}
+          </h1>
+          <p style={{ fontSize: '1.05rem', color: 'var(--cls-text-muted)', maxWidth: '460px', lineHeight: '1.65', fontWeight: 300, marginBottom: '2rem' }}>
+            {SLIDES[currentIndex].description}
+          </p>
 
           <div className="hero-action-buttons">
             <a href="tel:+917821085631" className="btn btn-primary">Call Now</a>
@@ -135,29 +134,19 @@ export const HeroCarousel: React.FC = () => {
       {/* 2. Right Side: The Fully Contained Image Frame */}
       <div className="hero-right-col">
         <div className="hero-image-frame-outer">
-          <AnimatePresence initial={false} custom={direction} mode="popLayout">
-            <motion.div
-              key={currentIndex}
-              custom={direction}
-              variants={imageVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              className="hero-image-frame-inner"
-            >
-              {/* Image with subtle hover/drift */}
-              <motion.img 
-                src={SLIDES[currentIndex].image} 
-                alt={SLIDES[currentIndex].title}
-                className="hero-carousel-img"
-                initial={{ scale: 1.02 }}
-                animate={{ scale: 1.06 }}
-                transition={{ duration: 6, ease: 'linear' }}
-              />
-            </motion.div>
-          </AnimatePresence>
+          <div className="hero-image-frame-inner" style={{ position: 'relative', width: '100%', height: '100%' }}>
+            <img 
+              ref={imgRef}
+              src={SLIDES[currentIndex].image} 
+              alt={SLIDES[currentIndex].title}
+              className="hero-carousel-img"
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+          </div>
         </div>
       </div>
     </div>
   );
 };
+
+export default HeroCarousel;
