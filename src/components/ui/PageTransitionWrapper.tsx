@@ -32,7 +32,7 @@ export const PageTransitionWrapper: React.FC<PageTransitionWrapperProps> = ({ ch
     } else {
       setRenderedChildren(children);
     }
-  }, [location, children]);
+  }, [location, children, displayLocation.pathname]);
 
   useEffect(() => {
     // Step 3: Fade out overlay and reveal new page once it's rendered

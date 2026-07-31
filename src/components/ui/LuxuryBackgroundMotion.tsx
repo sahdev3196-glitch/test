@@ -37,81 +37,97 @@ export const LuxuryBackgroundMotion: React.FC = () => {
         zIndex: 0,
       }}
     >
-      {/* Blur Shape 1 (Beige) */}
+      {/* 3D Soft Champagne Light Orb 1 */}
       <div 
         className="floating-element" 
         style={{
           position: 'absolute',
-          top: '12%',
-          left: '8%',
-          width: '90px',
-          height: '90px',
+          top: '5%',
+          left: '10%',
+          width: '380px',
+          height: '380px',
           borderRadius: '50%',
-          backgroundColor: 'var(--cls-gold)',
-          opacity: 0.03,
-          filter: 'blur(24px)',
+          background: 'radial-gradient(circle, rgba(225, 205, 175, 0.35) 0%, rgba(225, 205, 175, 0) 70%)',
+          filter: 'blur(50px)',
         }}
       />
 
-      {/* Blur Shape 2 (Taupe) */}
+      {/* 3D Pastel Rose Light Orb 2 */}
       <div 
         className="floating-element" 
         style={{
           position: 'absolute',
-          top: '55%',
-          right: '6%',
-          width: '130px',
-          height: '130px',
+          top: '45%',
+          right: '5%',
+          width: '480px',
+          height: '480px',
           borderRadius: '50%',
-          backgroundColor: 'var(--cls-taupe)',
-          opacity: 0.04,
-          filter: 'blur(30px)',
+          background: 'radial-gradient(circle, rgba(212, 185, 150, 0.3) 0%, rgba(212, 185, 150, 0) 70%)',
+          filter: 'blur(60px)',
         }}
       />
 
-      {/* Elegant Thin Line 1 */}
-      <div 
-        className="floating-element" 
-        style={{
-          position: 'absolute',
-          top: '35%',
-          left: '4%',
-          width: '140px',
-          height: '1px',
-          backgroundColor: 'var(--cls-gold)',
-          opacity: 0.05,
-          transform: 'rotate(-12deg)',
-        }}
-      />
-
-      {/* Elegant Thin Line 2 */}
-      <div 
-        className="floating-element" 
-        style={{
-          position: 'absolute',
-          top: '80%',
-          left: '18%',
-          width: '180px',
-          height: '1px',
-          backgroundColor: 'var(--cls-taupe)',
-          opacity: 0.05,
-          transform: 'rotate(18deg)',
-        }}
-      />
-
-      {/* Soft Radial Gradient */}
+      {/* 3D Glass Pearl Sphere 1 */}
       <div 
         className="floating-element" 
         style={{
           position: 'absolute',
           top: '25%',
-          right: '20%',
-          width: '280px',
-          height: '280px',
+          left: '5%',
+          width: '140px',
+          height: '140px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(197, 160, 89, 0.12) 0%, rgba(250, 249, 246, 0) 70%)',
-          opacity: 0.06,
-          filter: 'blur(35px)',
+          background: 'rgba(255, 255, 255, 0.55)',
+          border: '1px solid rgba(184, 145, 80, 0.3)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          boxShadow: '0 20px 40px rgba(160, 140, 115, 0.12), inset 0 1px 0 rgba(255,255,255,0.9)'
+        }}
+      />
+
+      {/* 3D Glass Pearl Sphere 2 */}
+      <div 
+        className="floating-element" 
+        style={{
+          position: 'absolute',
+          top: '75%',
+          right: '12%',
+          width: '180px',
+          height: '180px',
+          borderRadius: '50%',
+          background: 'rgba(255, 255, 255, 0.45)',
+          border: '1px solid rgba(184, 145, 80, 0.25)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          boxShadow: '0 20px 40px rgba(160, 140, 115, 0.12), inset 0 1px 0 rgba(255,255,255,0.8)'
+        }}
+      />
+
+      {/* Elegant Champagne Light Ray 1 */}
+      <div 
+        className="floating-element" 
+        style={{
+          position: 'absolute',
+          top: '30%',
+          left: '-5%',
+          width: '400px',
+          height: '1.5px',
+          background: 'linear-gradient(90deg, transparent, rgba(184, 145, 80, 0.4), transparent)',
+          transform: 'rotate(-25deg)',
+        }}
+      />
+
+      {/* Elegant Champagne Light Ray 2 */}
+      <div 
+        className="floating-element" 
+        style={{
+          position: 'absolute',
+          top: '70%',
+          right: '-5%',
+          width: '500px',
+          height: '1.5px',
+          background: 'linear-gradient(90deg, transparent, rgba(184, 145, 80, 0.35), transparent)',
+          transform: 'rotate(15deg)',
         }}
       />
     </div>

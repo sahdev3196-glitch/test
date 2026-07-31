@@ -46,16 +46,18 @@ export const CategoryPageLayout: React.FC<CategoryPageLayoutProps> = ({ data }) 
       <section 
         ref={descRef as any}
         className="detailed-desc-section section-padding" 
-        style={{ backgroundColor: 'var(--cls-pure-white)', borderTop: '1px solid var(--cls-border-lux)', opacity: 0 }}
+        style={{ opacity: 0 }}
       >
-        <div className="container" style={{ maxWidth: '800px' }}>
-          <h2 className="editorial-section-heading font-serif" style={{ fontSize: '2.25rem', marginBottom: '1.5rem', marginTop: 0 }}>
-            {data.detailedDescriptionTitle}
-          </h2>
-          <div style={{ borderBottom: '2px solid var(--cls-gold)', width: '60px', marginBottom: '2rem' }} />
-          <p className="editorial-body" style={{ fontSize: '1.1rem', margin: 0 }}>
-            {data.detailedDescription}
-          </p>
+        <div className="container" style={{ maxWidth: '850px' }}>
+          <div className="glass-dark" style={{ padding: '3.5rem 3rem', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.15)', background: 'rgba(18, 20, 26, 0.75)', backdropFilter: 'blur(20px)', boxShadow: '0 25px 60px rgba(0,0,0,0.4)' }}>
+            <h2 className="editorial-section-heading font-serif" style={{ fontSize: '2.4rem', marginBottom: '1.5rem', marginTop: 0, color: '#FFFFFF' }}>
+              {data.detailedDescriptionTitle}
+            </h2>
+            <div style={{ borderBottom: '2px solid var(--cls-gold)', width: '70px', marginBottom: '2rem' }} />
+            <p className="editorial-body" style={{ fontSize: '1.1rem', margin: 0, color: 'var(--cls-text-muted)', lineHeight: '1.75' }}>
+              {data.detailedDescription}
+            </p>
+          </div>
         </div>
       </section>
 

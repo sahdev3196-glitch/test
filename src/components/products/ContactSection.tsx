@@ -72,7 +72,7 @@ export const ContactSection: React.FC = () => {
                     Email Studio
                   </h4>
                   <p style={{ fontSize: '0.9rem', margin: 0, color: 'var(--cls-text-muted)' }}>
-                    <a href="mailto:hello@urbanfrill.com" className="hover:text-amber-600">hello@urbanfrill.com</a>
+                    <a href="mailto:urbanfrill1508@gmail.com" className="hover:text-amber-600">urbanfrill1508@gmail.com</a>
                   </p>
                 </div>
               </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Search, ShieldCheck, Award, Sliders, Sparkles } from 'lucide-react';
+import { ArrowRight, Search, ShieldCheck, Award, Sliders, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
 import { LuxuryBackgroundMotion } from '../components/ui/LuxuryBackgroundMotion';
 import { animate, stagger, createTimeline } from 'animejs';
 import { useReveal } from '../hooks/useReveal';
@@ -13,6 +13,8 @@ interface CollectionItem {
   image: string;
   slug: string;
 }
+
+const ITEMS_PER_PAGE = 8;
 
 const collections: Record<string, CollectionItem[]> = {
   curtains: [
@@ -142,6 +144,7 @@ export const Products: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [displayedItems, setDisplayedItems] = useState<CollectionItem[]>(allItems);
   const [searchQuery, setSearchQuery]       = useState('');
+  const [currentPage, setCurrentPage]       = useState(1);
   const [isAnimating, setIsAnimating]       = useState(false);
 
   const headerReveal   = useRef<HTMLDivElement | null>(null);
@@ -208,6 +211,7 @@ export const Products: React.FC = () => {
       onComplete: () => {
         setActiveCategory(catKey);
         setDisplayedItems(getItems(catKey, query));
+        setCurrentPage(1); // Reset to page 1 on category switch
 
         // Smooth scroll to grid
         gridSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -236,6 +240,7 @@ export const Products: React.FC = () => {
     setSearchQuery(q);
     const filtered = getItems(activeCategory, q);
     setDisplayedItems(filtered);
+    setCurrentPage(1); // Reset to page 1 on search
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
@@ -250,9 +255,35 @@ export const Products: React.FC = () => {
     });
   };
 
+  // ── Pagination Calculation & Handlers ──────────────────────────────────────
+  const totalItems = displayedItems.length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const paginatedItems = displayedItems.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    if (page < 1 || page > totalPages || page === currentPage || isAnimating) return;
+    setCurrentPage(page);
+
+    // Scroll to grid top
+    gridSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const cards = gridRef.current?.querySelectorAll<HTMLElement>('.product-card') ?? [];
+        if (cards.length > 0) {
+          animate(Array.from(cards), {
+            opacity: [0, 1], translateY: [24, 0],
+            delay: stagger(50), duration: 400, easing: 'easeOutExpo'
+          });
+        }
+      });
+    });
+  };
+
   // ── Active category meta ──────────────────────────────────────────────────
   const activeMeta = categories.find(c => c.key === activeCategory)!;
-  const totalItems = displayedItems.length;
 
   // ─────────────────────────────────────────────────────────────────────────
   return (
@@ -264,10 +295,10 @@ export const Products: React.FC = () => {
         <span className="section-tagline" style={{ display: 'block', marginBottom: '0.75rem' }}>
           OUR COLLECTIONS
         </span>
-        <h1 style={{ fontSize: '3rem', fontWeight: 300, fontFamily: 'var(--font-display)', color: 'var(--cls-charcoal)', marginBottom: '1.25rem', margin: '0 auto 1.25rem' }}>
+        <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 300, fontFamily: 'var(--font-display)', color: 'var(--cls-charcoal)', marginBottom: '1.25rem', margin: '0 auto 1.25rem' }}>
           Explore Our Premium Collections
         </h1>
-        <p style={{ fontSize: '1.1rem', color: 'var(--cls-text-muted)', maxWidth: '560px', margin: '0 auto', fontWeight: 300 }}>
+        <p style={{ fontSize: 'clamp(0.95rem, 2.5vw, 1.1rem)', color: 'var(--cls-text-muted)', maxWidth: '560px', margin: '0 auto', fontWeight: 300 }}>
           Discover luxury furnishing solutions curated for every space and lifestyle.
         </p>
       </section>
@@ -308,33 +339,31 @@ export const Products: React.FC = () => {
       </div>
 
       {/* ── Category Nav Pills ────────────────────────────────────────────── */}
-      <div className="container" style={{
-        display: 'flex', justifyContent: 'center', gap: '0.5rem',
-        flexWrap: 'wrap', marginBottom: '3.5rem'
-      }}>
+      <div className="container category-nav-scroll">
         {categories.map(cat => {
           const isActive = activeCategory === cat.key;
           return (
             <button
               key={cat.key}
               onClick={() => switchCategory(cat.key)}
+              className="category-nav-btn"
               style={{
                 padding: '0.65rem 1.35rem',
                 borderRadius: '30px',
                 border: '1px solid',
                 borderColor: isActive ? 'transparent' : 'var(--cls-border-lux)',
-                backgroundColor: isActive ? '#C7A26A' : 'var(--cls-pure-white)',
+                backgroundColor: isActive ? '#B89150' : 'var(--cls-pure-white)',
                 color: isActive ? '#FFFFFF' : 'var(--cls-charcoal)',
                 fontSize: '0.83rem', fontWeight: 500, cursor: 'pointer',
                 letterSpacing: '0.03em',
-                boxShadow: isActive ? '0 4px 14px rgba(199,162,106,0.35)' : 'none',
+                boxShadow: isActive ? '0 4px 14px rgba(184,145,80,0.35)' : 'none',
                 transition: 'all 0.28s ease',
                 fontFamily: 'var(--font-body)'
               }}
               onMouseEnter={e => {
                 if (!isActive) {
-                  e.currentTarget.style.borderColor = '#C7A26A';
-                  e.currentTarget.style.color = '#C7A26A';
+                  e.currentTarget.style.borderColor = '#B89150';
+                  e.currentTarget.style.color = '#B89150';
                 }
               }}
               onMouseLeave={e => {
@@ -354,9 +383,9 @@ export const Products: React.FC = () => {
       <section ref={gridSectionRef as any} className="container" style={{ marginBottom: '5rem', scrollMarginTop: '7rem' }}>
 
         {/* Category subtitle + count */}
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: '1rem', marginBottom: '2.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', marginBottom: '2rem' }}>
           <div>
-            <h2 style={{ fontSize: '1.65rem', fontWeight: 300, color: 'var(--cls-charcoal)', fontFamily: 'var(--font-display)', margin: 0, lineHeight: 1.3 }}>
+            <h2 style={{ fontSize: 'clamp(1.35rem, 3.5vw, 1.65rem)', fontWeight: 300, color: 'var(--cls-charcoal)', fontFamily: 'var(--font-display)', margin: 0, lineHeight: 1.3 }}>
               {activeMeta.label}
             </h2>
             <p style={{ fontSize: '0.88rem', color: 'var(--cls-text-muted)', margin: '0.3rem 0 0', fontWeight: 300 }}>
@@ -364,9 +393,8 @@ export const Products: React.FC = () => {
             </p>
           </div>
           <span style={{
-            marginLeft: 'auto',
             fontSize: '0.8rem', fontWeight: 500, letterSpacing: '0.06em',
-            color: 'var(--cls-pure-white)', backgroundColor: '#C7A26A',
+            color: '#FFFFFF', backgroundColor: '#B89150',
             padding: '0.25rem 0.8rem', borderRadius: '20px'
           }}>
             {totalItems} {totalItems === 1 ? 'collection' : 'collections'}
@@ -374,35 +402,29 @@ export const Products: React.FC = () => {
         </div>
 
         {/* The grid */}
-        <div ref={gridRef} style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: '1.75rem'
-        }}
-        className="products-grid"
-        >
-          {displayedItems.length === 0 ? (
+        <div ref={gridRef} className="products-grid">
+          {paginatedItems.length === 0 ? (
             <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '4rem 0', color: 'var(--cls-text-muted)' }}>
               <p style={{ fontSize: '1rem' }}>No collections match your search.</p>
             </div>
-          ) : displayedItems.map((item, idx) => (
+          ) : paginatedItems.map((item, idx) => (
             <Link
-              key={`${activeCategory}-${idx}`}
+              key={`${activeCategory}-page${currentPage}-${idx}`}
               to={`/products/${item.slug}`}
-              className="product-card"
+              className="product-card glass-card"
               style={{
                 opacity: 0,
                 display: 'flex', flexDirection: 'column',
-                backgroundColor: 'var(--cls-pure-white)',
                 borderRadius: '16px', overflow: 'hidden',
-                border: '1px solid var(--cls-border-lux)',
-                boxShadow: '0 2px 12px rgba(31,31,31,0.06)',
                 textDecoration: 'none', color: 'inherit',
+                border: '1px solid rgba(184, 145, 80, 0.25)',
+                background: 'rgba(255, 255, 255, 0.75)',
+                backdropFilter: 'blur(16px)',
+                boxShadow: '0 15px 45px rgba(160, 140, 115, 0.12)',
                 transition: 'transform 0.35s ease, box-shadow 0.35s ease'
               }}
               onMouseEnter={e => {
                 e.currentTarget.style.transform = 'translateY(-6px)';
-                e.currentTarget.style.boxShadow = '0 12px 36px rgba(31,31,31,0.13)';
                 const img = e.currentTarget.querySelector<HTMLImageElement>('.card-img');
                 if (img) img.style.transform = 'scale(1.05)';
                 const arrow = e.currentTarget.querySelector<HTMLDivElement>('.card-arrow');
@@ -410,7 +432,6 @@ export const Products: React.FC = () => {
               }}
               onMouseLeave={e => {
                 e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 2px 12px rgba(31,31,31,0.06)';
                 const img = e.currentTarget.querySelector<HTMLImageElement>('.card-img');
                 if (img) img.style.transform = 'scale(1)';
                 const arrow = e.currentTarget.querySelector<HTMLDivElement>('.card-arrow');
@@ -428,7 +449,7 @@ export const Products: React.FC = () => {
                 />
               </div>
               {/* Details */}
-              <div style={{ padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flex: 1 }}>
+              <div style={{ padding: '1.25rem 1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flex: 1 }}>
                 <div style={{ textAlign: 'left' }}>
                   <h3 style={{ fontSize: '1.05rem', fontWeight: 500, color: 'var(--cls-charcoal)', margin: '0 0 0.3rem' }}>
                     {item.name}
@@ -436,15 +457,16 @@ export const Products: React.FC = () => {
                   <p style={{ fontSize: '0.8rem', color: 'var(--cls-text-muted)', margin: 0, lineHeight: 1.5 }}>
                     {item.desc}
                   </p>
-                  <span style={{ fontSize: '0.75rem', color: '#C7A26A', fontWeight: 500, letterSpacing: '0.04em', marginTop: '0.6rem', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--cls-gold)', fontWeight: 600, letterSpacing: '0.04em', marginTop: '0.6rem', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                     Explore Collection <span className="card-arrow" style={{ display: 'inline-block', transition: 'transform 0.3s ease' }}>→</span>
                   </span>
                 </div>
                 <div style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   width: '34px', height: '34px', borderRadius: '50%',
-                  border: '1px solid var(--cls-border-lux)', color: '#C7A26A',
-                  flexShrink: 0, marginLeft: '1rem'
+                  border: '1px solid rgba(184, 145, 80, 0.4)', color: 'var(--cls-gold)',
+                  background: 'rgba(255, 255, 255, 0.7)', backdropFilter: 'blur(8px)',
+                  flexShrink: 0, marginLeft: '0.75rem'
                 }}>
                   <ArrowRight size={14} />
                 </div>
@@ -452,20 +474,125 @@ export const Products: React.FC = () => {
             </Link>
           ))}
         </div>
+
+        {/* Pagination Bar */}
+        {totalPages > 1 && (
+          <div 
+            style={{ 
+              display: 'flex', 
+              flexDirection: 'column', 
+              alignItems: 'center', 
+              gap: '1rem', 
+              marginTop: '3.5rem' 
+            }}
+          >
+            <div 
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexWrap: 'wrap',
+                gap: '0.35rem',
+                padding: '0.4rem 0.6rem',
+                borderRadius: '30px',
+                background: 'rgba(255, 255, 255, 0.85)',
+                backdropFilter: 'blur(16px)',
+                border: '1px solid rgba(184, 145, 80, 0.25)',
+                boxShadow: '0 10px 30px rgba(160, 140, 115, 0.08)',
+                maxWidth: '100%'
+              }}
+            >
+              {/* Prev Button */}
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                aria-label="Previous page"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '2px',
+                  padding: '0.4rem 0.75rem',
+                  borderRadius: '20px',
+                  border: 'none',
+                  backgroundColor: 'transparent',
+                  color: currentPage === 1 ? '#C2B8AD' : '#1F1D1A',
+                  fontSize: '0.82rem',
+                  fontWeight: 500,
+                  cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <ChevronLeft size={16} /> Prev
+              </button>
+
+              {/* Page Numbers */}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNum => {
+                const isCurrent = pageNum === currentPage;
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => handlePageChange(pageNum)}
+                    aria-label={`Go to page ${pageNum}`}
+                    style={{
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '50%',
+                      border: 'none',
+                      backgroundColor: isCurrent ? '#B89150' : 'transparent',
+                      color: isCurrent ? '#FFFFFF' : '#1F1D1A',
+                      fontSize: '0.82rem',
+                      fontWeight: isCurrent ? 600 : 500,
+                      cursor: 'pointer',
+                      boxShadow: isCurrent ? '0 4px 14px rgba(184,145,80,0.35)' : 'none',
+                      transition: 'all 0.25s ease'
+                    }}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              })}
+
+              {/* Next Button */}
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                aria-label="Next page"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '2px',
+                  padding: '0.4rem 0.75rem',
+                  borderRadius: '20px',
+                  border: 'none',
+                  backgroundColor: 'transparent',
+                  color: currentPage === totalPages ? '#C2B8AD' : '#1F1D1A',
+                  fontSize: '0.82rem',
+                  fontWeight: 500,
+                  cursor: currentPage === totalPages ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                Next <ChevronRight size={16} />
+              </button>
+            </div>
+
+            {/* Pagination Range Subtitle */}
+            <span style={{ fontSize: '0.82rem', color: 'var(--cls-text-muted)', fontWeight: 400, textAlign: 'center' }}>
+              Showing {startIndex + 1}–{Math.min(endIndex, totalItems)} of {totalItems} collections
+            </span>
+          </div>
+        )}
       </section>
 
       {/* ── Value Props Bar ───────────────────────────────────────────────── */}
       <section
         ref={valuePropsReveal as any}
         style={{
-          backgroundColor: 'var(--cls-soft-beige)',
-          borderTop: '1px solid var(--cls-border-lux)',
-          borderBottom: '1px solid var(--cls-border-lux)',
-          padding: '3rem 0', opacity: 0
+          padding: '2.5rem 0', opacity: 0
         }}
       >
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '2.5rem' }}>
+          <div className="glass-panel" style={{ padding: '2.25rem 2.5rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '2.5rem' }}>
             {[
               { icon: <Sparkles size={20} />,    label: 'Premium Materials' },
               { icon: <Award size={20} />,        label: 'Expert Craftsmanship' },
@@ -473,7 +600,7 @@ export const Products: React.FC = () => {
               { icon: <ShieldCheck size={20} />,  label: 'Professional Installation' },
             ].map((v, i) => (
               <div key={i} style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                <div style={{ color: 'var(--cls-gold)' }}>{v.icon}</div>
+                <div style={{ color: 'var(--cls-gold)', background: 'rgba(197, 160, 89, 0.15)', padding: '10px', borderRadius: '50%', display: 'flex' }}>{v.icon}</div>
                 <span style={{ fontSize: '0.95rem', fontWeight: 500, color: 'var(--cls-charcoal)', textAlign: 'left' }}>
                   {v.label}
                 </span>

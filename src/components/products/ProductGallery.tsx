@@ -8,10 +8,10 @@ interface ProductGalleryProps {
 }
 
 export const ProductGallery: React.FC<ProductGalleryProps> = ({ gallery, title }) => {
-  if (!gallery || gallery.length === 0) return null;
-
-  // Stagger reveal image containers when they enter the viewport
+  // Call hooks unconditionally at top level
   const containerRef = useStagger('.gallery-image-item', 20, 700);
+
+  if (!gallery || gallery.length === 0) return null;
 
   const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     revealImage(e.currentTarget);

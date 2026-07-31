@@ -18,6 +18,8 @@ const About = lazy(() => import('../pages/About'));
 const Projects = lazy(() => import('../pages/Projects'));
 const FAQPage = lazy(() => import('../pages/FAQPage'));
 const ContactPage = lazy(() => import('../pages/ContactPage'));
+const ProductDetailPage = lazy(() => import('../pages/ProductDetailPage'));
+const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
 
 export const AppRoutes: React.FC = () => {
   return (
@@ -40,6 +42,8 @@ export const AppRoutes: React.FC = () => {
         <Route path="/products/upholstery-fabrics" element={<Upholstery />} />
         <Route path="/products/mattresses" element={<Mattresses />} />
         <Route path="/products/customized-soft-furnishings" element={<SoftFurnishings />} />
+        <Route path="/product/:slug" element={<ProductDetailPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>
   );

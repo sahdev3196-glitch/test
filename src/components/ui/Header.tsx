@@ -6,10 +6,10 @@ import { animate } from 'animejs';
 export const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
+
   const headerRef = useRef<HTMLElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  
+
   const location = useLocation();
 
   // 1. Entry Animation: Fade in from top
@@ -40,7 +40,7 @@ export const Header: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 3. Scroll scroll-responsive styling animations via Anime.js
+  // 3. Scroll-responsive glassmorphism styling animations via Anime.js
   useEffect(() => {
     if (!headerRef.current || !containerRef.current) return;
     const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -48,27 +48,27 @@ export const Header: React.FC = () => {
 
     if (isScrolled) {
       animate(headerRef.current, {
-        backgroundColor: 'rgba(250, 249, 246, 0.98)',
-        boxShadow: '0 10px 40px rgba(0, 0, 0, 0.04)',
+        backgroundColor: 'rgba(255, 255, 255, 0.92)',
+        boxShadow: '0 10px 35px rgba(160, 140, 115, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95)',
         duration: 300,
         easing: 'easeOutQuad'
       });
       animate(containerRef.current, {
-        paddingTop: '1rem',
-        paddingBottom: '1rem',
+        paddingTop: '0.85rem',
+        paddingBottom: '0.85rem',
         duration: 300,
         easing: 'easeOutQuad'
       });
     } else {
       animate(headerRef.current, {
-        backgroundColor: 'rgba(250, 249, 246, 0.85)',
-        boxShadow: '0 10px 40px rgba(0, 0, 0, 0)',
+        backgroundColor: 'rgba(255, 255, 255, 0.75)',
+        boxShadow: '0 10px 30px rgba(160, 140, 115, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
         duration: 300,
         easing: 'easeOutQuad'
       });
       animate(containerRef.current, {
-        paddingTop: '1.5rem',
-        paddingBottom: '1.5rem',
+        paddingTop: '1.35rem',
+        paddingBottom: '1.35rem',
         duration: 300,
         easing: 'easeOutQuad'
       });
@@ -84,41 +84,68 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header ref={headerRef} className="main-header" style={{ borderBottom: '1px solid rgba(28, 28, 28, 0.05)', transition: 'none' }}>
+    <header
+      ref={headerRef}
+      className="main-header"
+      style={{
+        backgroundColor: 'rgba(255, 255, 255, 0.75)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        borderBottom: '1px solid rgba(184, 145, 80, 0.25)',
+        transition: 'none'
+      }}
+    >
       <div ref={containerRef} className="header-container" style={{ transition: 'none' }}>
-        <Link 
-          to="/" 
-          className="logo-brand" 
-          aria-label="Urban Frill Home" 
+        <Link
+          to="/"
+          className="logo-brand"
+          aria-label="Urban Frill Home"
           onClick={closeMenu}
+          style={{ color: '#1F1D1A' }}
         >
-          Urban <span>Frill</span>
+          Urban <span style={{ color: '#B89150' }}>Frill</span>
         </Link>
-        
+
         <button
           className="menu-toggle"
           onClick={toggleMenu}
           aria-expanded={isMenuOpen}
           aria-controls="primary-nav"
           aria-label="Toggle navigation menu"
+          style={{
+            padding: '8px',
+            borderRadius: '10px',
+            background: 'rgba(255, 255, 255, 0.7)',
+            border: '1px solid rgba(184, 145, 80, 0.3)'
+          }}
         >
           {isMenuOpen ? (
-            <X size={24} style={{ color: '#1C1C1C' }} />
+            <X size={24} style={{ color: '#1F1D1A' }} />
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-              <span className="hamburger-bar"></span>
-              <span className="hamburger-bar"></span>
-              <span className="hamburger-bar"></span>
+              <span className="hamburger-bar" style={{ background: '#1F1D1A' }}></span>
+              <span className="hamburger-bar" style={{ background: '#B89150' }}></span>
+              <span className="hamburger-bar" style={{ background: '#1F1D1A' }}></span>
             </div>
           )}
         </button>
 
-        <nav id="primary-nav" className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
+        <nav
+          id="primary-nav"
+          className={`nav-menu ${isMenuOpen ? 'active' : ''}`}
+          style={isMenuOpen ? {
+            background: 'rgba(250, 248, 245, 0.95)',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
+            borderLeft: '1px solid rgba(184, 145, 80, 0.3)',
+            boxShadow: '-20px 0 60px rgba(160, 140, 115, 0.2)'
+          } : undefined}
+        >
           <ul>
             <li>
-              <NavLink 
-                to="/" 
-                end 
+              <NavLink
+                to="/"
+                end
                 onClick={closeMenu}
                 className={({ isActive }) => isActive ? 'active' : ''}
               >
@@ -126,8 +153,8 @@ export const Header: React.FC = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink 
-                to="/about" 
+              <NavLink
+                to="/about"
                 onClick={closeMenu}
                 className={({ isActive }) => isActive ? 'active' : ''}
               >
@@ -135,8 +162,8 @@ export const Header: React.FC = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink 
-                to="/products" 
+              <NavLink
+                to="/products"
                 onClick={closeMenu}
                 className={({ isActive }) => isActive || location.pathname.startsWith('/products') ? 'active' : ''}
               >
@@ -144,8 +171,8 @@ export const Header: React.FC = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink 
-                to="/projects" 
+              <NavLink
+                to="/projects"
                 onClick={closeMenu}
                 className={({ isActive }) => isActive ? 'active' : ''}
               >
@@ -153,8 +180,8 @@ export const Header: React.FC = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink 
-                to="/faq" 
+              <NavLink
+                to="/faq"
                 onClick={closeMenu}
                 className={({ isActive }) => isActive ? 'active' : ''}
               >
@@ -162,8 +189,8 @@ export const Header: React.FC = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink 
-                to="/contact" 
+              <NavLink
+                to="/contact"
                 onClick={closeMenu}
                 className={({ isActive }) => isActive ? 'active' : ''}
               >
@@ -178,3 +205,4 @@ export const Header: React.FC = () => {
 };
 
 export default Header;
+

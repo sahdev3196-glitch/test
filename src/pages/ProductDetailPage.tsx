@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Phone, MessageSquare, Shield, CheckCircle, Clock } from 'lucide-react';
+import { TiltCard3D } from '../components/ui/TiltCard3D';
 
 interface ProductData {
   slug: string;
@@ -433,34 +434,36 @@ export const ProductDetailPage: React.FC = () => {
 
         {/* Hero Banner Grid */}
         <div className="offering-hero-grid">
-          <div className="offering-hero-img-box">
-            <img 
-              src={product.image} 
-              alt={`${product.headline} premium showroom design, Urban Frill Pune`}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
-          </div>
+          <TiltCard3D>
+            <div className="offering-hero-img-box glass-card" style={{ padding: '10px', borderRadius: '24px', border: '1px solid rgba(184, 145, 80, 0.25)', background: 'rgba(255, 255, 255, 0.75)', backdropFilter: 'blur(20px)', boxShadow: '0 20px 50px rgba(160, 140, 115, 0.12)' }}>
+              <img 
+                src={product.image} 
+                alt={`${product.headline} premium showroom design, Urban Frill Pune`}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '18px' }}
+              />
+            </div>
+          </TiltCard3D>
           
           {/* Quick specs card */}
-          <div className="offering-specs-card">
-            <h3>Architectural Specifications</h3>
-            <div style={{ borderBottom: '1px solid rgba(28, 28, 28, 0.08)', margin: '1rem 0' }} />
+          <div className="offering-specs-card glass-panel" style={{ padding: '2.5rem', borderRadius: '24px', border: '1px solid rgba(184, 145, 80, 0.25)', background: 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(20px)', boxShadow: '0 20px 50px rgba(160, 140, 115, 0.12)' }}>
+            <h3 style={{ color: '#1F1D1A', fontFamily: 'var(--font-display)', margin: 0 }}>Architectural Specifications</h3>
+            <div style={{ borderBottom: '1px solid rgba(184, 145, 80, 0.2)', margin: '1rem 0' }} />
             <table className="offering-specs-table">
               <tbody>
                 {product.specs.map((spec, i) => (
                   <tr key={i}>
-                    <td><strong>{spec.label}</strong></td>
-                    <td>{spec.value}</td>
+                    <td><strong style={{ color: 'var(--cls-gold)' }}>{spec.label}</strong></td>
+                    <td style={{ color: '#1F1D1A' }}>{spec.value}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '2rem' }}>
-              <button onClick={handleWhatsAppEnquiry} className="btn btn-primary btn-block text-center" style={{ justifyContent: 'center' }}>
+              <button onClick={handleWhatsAppEnquiry} className="glass-btn-primary btn-block text-center" style={{ justifyContent: 'center', background: 'linear-gradient(135deg, #B89150 0%, #8A6D3B 100%)', border: '1px solid rgba(255,255,255,0.6)', boxShadow: '0 10px 30px rgba(184, 145, 80, 0.3)', color: '#FFFFFF' }}>
                 <MessageSquare size={16} style={{ marginRight: '8px' }} /> Enquire on WhatsApp
               </button>
-              <a href="tel:+917821085631" className="btn btn-secondary btn-block text-center" style={{ justifyContent: 'center' }}>
+              <a href="tel:+917821085631" className="glass-btn-secondary btn-block text-center" style={{ justifyContent: 'center', color: '#1F1D1A', border: '1px solid rgba(184, 145, 80, 0.3)' }}>
                 <Phone size={16} style={{ marginRight: '8px' }} /> Call Studio Consultant
               </a>
             </div>
@@ -494,7 +497,7 @@ export const ProductDetailPage: React.FC = () => {
               ))}
             </ul>
 
-            <div className="offering-trust-card">
+            <div className="offering-trust-card glass-panel" style={{ padding: '1.5rem', borderRadius: '16px' }}>
               <div className="trust-item">
                 <Shield size={20} style={{ color: 'var(--cls-gold)' }} />
                 <div>
@@ -518,7 +521,7 @@ export const ProductDetailPage: React.FC = () => {
           <h2 style={{ fontSize: '1.75rem', marginBottom: '2rem', fontWeight: 400, textAlign: 'center' }}>Bespoke Consultation FAQ</h2>
           <div className="offering-faq-grid">
             {product.faqs.map((faq, i) => (
-              <div key={i} className="offering-faq-card">
+              <div key={i} className="offering-faq-card glass-card" style={{ padding: '1.5rem', borderRadius: '16px' }}>
                 <h4 style={{ fontSize: '1.05rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--cls-charcoal)' }}>Q: {faq.q}</h4>
                 <p style={{ fontSize: '0.95rem', margin: 0, color: 'var(--cls-text-muted)' }}>{faq.a}</p>
               </div>
@@ -530,3 +533,6 @@ export const ProductDetailPage: React.FC = () => {
     </article>
   );
 };
+
+export default ProductDetailPage;
+

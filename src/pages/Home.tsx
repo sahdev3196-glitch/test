@@ -8,6 +8,7 @@ import { animate } from 'animejs';
 import { ConsultationBanner } from '../components/products/ConsultationBanner';
 import { LuxuryBackgroundMotion } from '../components/ui/LuxuryBackgroundMotion';
 import { RecentProjects } from '../components/products/RecentProjects';
+import { TiltCard3D } from '../components/ui/TiltCard3D';
 
 export const Home: React.FC = () => {
   const heroTextRef = useRef<HTMLDivElement | null>(null);
@@ -20,7 +21,7 @@ export const Home: React.FC = () => {
     if (metaDescription) {
       metaDescription.setAttribute(
         'content',
-        "Urban Frill is Pune & Jaipur's premium architectural furnishing studio. Custom curtains, motorized tracks, roller blinds, textured wallpapers, and luxury flooring systems."
+        "Urban Frill is Pune's premier architectural furnishing studio. Custom curtains, motorized tracks, roller blinds, textured wallpapers, and luxury flooring systems."
       );
     }
     window.scrollTo({ top: 0, behavior: 'instant' as any });
@@ -96,12 +97,12 @@ export const Home: React.FC = () => {
       <section 
         className="hero-section"
         style={{
-          minHeight: '85vh',
+          minHeight: '88vh',
           display: 'flex',
           alignItems: 'center',
-          paddingTop: '8rem',
-          paddingBottom: '4rem',
-          backgroundColor: 'var(--cls-warm-white)'
+          paddingTop: '8.5rem',
+          paddingBottom: '4.5rem',
+          position: 'relative'
         }}
       >
         <div className="container" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '3rem', alignItems: 'center' }}>
@@ -120,119 +121,161 @@ export const Home: React.FC = () => {
               className="lg:col-span-5 text-left" 
               style={{ zIndex: 2, opacity: 0 }}
             >
-              <span className="section-tagline" style={{ marginBottom: '1rem', display: 'block' }}>
-                CRAFTED FOR TIMELESS INTERIORS
+              <span className="glass-pill" style={{ marginBottom: '1.25rem', color: 'var(--cls-gold)', border: '1px solid rgba(184, 145, 80, 0.35)', background: 'rgba(255, 255, 255, 0.7)' }}>
+                ✨ CRAFTED FOR TIMELESS INTERIORS
               </span>
-              <h1 style={{ fontSize: '3rem', fontWeight: 300, lineHeight: 1.15, marginBottom: '1.5rem', fontFamily: 'var(--font-display)' }}>
-                Luxury Furnishing Solutions
+              <h1 style={{ 
+                fontSize: '3.4rem', 
+                fontWeight: 300, 
+                lineHeight: 1.12, 
+                marginBottom: '1.5rem', 
+                fontFamily: 'var(--font-display)',
+                background: 'linear-gradient(135deg, #1F1D1A 30%, #9E7736 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}>
+                Luxury Architectural Furnishings
               </h1>
-              <p style={{ fontSize: '1.1rem', color: 'var(--cls-text-muted)', lineHeight: 1.6, marginBottom: '2.5rem', fontWeight: 300 }}>
-                Bespoke materials. Elegant designs. Beautifully crafted for the way you live.
+              <p style={{ fontSize: '1.15rem', color: 'var(--cls-text-muted)', lineHeight: 1.65, marginBottom: '2.5rem', fontWeight: 300 }}>
+                Bespoke materials. Automated motorized tracks. Tailored drapes & luxury flooring engineered for Pune's finest residences.
               </p>
-              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap' }}>
                 <Link 
                   to="/products" 
-                  className="btn btn-primary"
-                  style={{ textTransform: 'none', fontWeight: 500, fontSize: '0.9rem', letterSpacing: '0.05em' }}
+                  className="glass-btn-primary"
+                  style={{ textTransform: 'none', fontWeight: 500, fontSize: '0.95rem', letterSpacing: '0.04em', background: 'linear-gradient(135deg, #B89150 0%, #8A6D3B 100%)', border: '1px solid rgba(255,255,255,0.6)', boxShadow: '0 10px 30px rgba(184, 145, 80, 0.3)', color: '#FFFFFF' }}
                 >
                   Explore Collections <ArrowRight size={16} style={{ marginLeft: '8px' }} />
                 </Link>
                 <Link 
                   to="/contact" 
-                  className="btn btn-secondary"
-                  style={{ textTransform: 'none', fontWeight: 500, fontSize: '0.9rem', letterSpacing: '0.05em' }}
+                  className="glass-btn-secondary"
+                  style={{ textTransform: 'none', fontWeight: 500, fontSize: '0.95rem', letterSpacing: '0.04em', color: '#1F1D1A', border: '1px solid rgba(184, 145, 80, 0.3)' }}
                 >
                   Book Consultation
                 </Link>
               </div>
             </div>
 
-            {/* Right Column (7 Cols) */}
+            {/* Right Column (7 Cols) with 3D Tilt Stage */}
             <div 
               ref={heroImgRef as any}
               className="lg:col-span-7 flex justify-center"
               style={{ position: 'relative', opacity: 0 }}
             >
-              <div 
-                style={{
-                  width: '100%',
-                  height: '520px',
-                  borderRadius: '16px',
-                  overflow: 'hidden',
-                  boxShadow: 'var(--shadow-medium)',
-                  position: 'relative'
-                }}
-              >
-                <img 
-                  src="/assets/images/hero2.jpg" 
-                  alt="Luxury living room curtains and furnishing layout" 
-                  style={{ 
-                    width: '100%', 
-                    height: '100%', 
-                    objectFit: 'cover'
+              <TiltCard3D style={{ width: '100%' }}>
+                <div 
+                  className="glass-card"
+                  style={{
+                    width: '100%',
+                    height: '520px',
+                    borderRadius: '24px',
+                    overflow: 'hidden',
+                    position: 'relative',
+                    padding: '10px',
+                    border: '1px solid rgba(184, 145, 80, 0.3)',
+                    background: 'rgba(255, 255, 255, 0.75)',
+                    backdropFilter: 'blur(20px)',
+                    boxShadow: '0 25px 60px rgba(160, 140, 115, 0.18)'
                   }}
-                />
-              </div>
+                >
+                  <img 
+                    src="/assets/images/hero2.jpg" 
+                    alt="Luxury living room curtains and furnishing layout" 
+                    style={{ 
+                      width: '100%', 
+                      height: '100%', 
+                      objectFit: 'cover',
+                      borderRadius: '18px'
+                    }}
+                  />
+                  {/* Floating 3D Gold Crest Badge */}
+                  <div 
+                    style={{
+                      position: 'absolute',
+                      bottom: '24px',
+                      left: '24px',
+                      background: 'rgba(255, 255, 255, 0.9)',
+                      backdropFilter: 'blur(16px)',
+                      border: '1px solid rgba(184, 145, 80, 0.4)',
+                      borderRadius: '14px',
+                      padding: '12px 20px',
+                      color: '#1F1D1A',
+                      transform: 'translateZ(35px)',
+                      boxShadow: '0 15px 35px rgba(160, 140, 115, 0.2)'
+                    }}
+                  >
+                    <span style={{ fontSize: '0.75rem', color: 'var(--cls-gold)', letterSpacing: '0.12em', fontWeight: 600, display: 'block' }}>PUNE STUDIO</span>
+                    <span style={{ fontSize: '0.95rem', fontWeight: 500, color: '#1F1D1A' }}>Bespoke Drapery & Motorized Systems</span>
+                  </div>
+                </div>
+              </TiltCard3D>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
+      {/* Glass Stats Section */}
       <section 
         ref={statsRef as any}
         style={{ 
-          backgroundColor: 'var(--cls-soft-beige)', 
-          padding: '3rem 0',
-          borderTop: '1px solid var(--cls-border-lux)',
-          borderBottom: '1px solid var(--cls-border-lux)'
+          padding: '2.5rem 0',
+          position: 'relative',
+          zIndex: 5
         }}
       >
         <div className="container">
           <div 
+            className="glass-panel"
             style={{ 
               display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
-              gap: '2.5rem' 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', 
+              gap: '2rem',
+              padding: '2.5rem',
+              borderRadius: '20px',
+              border: '1px solid rgba(184, 145, 80, 0.25)',
+              background: 'rgba(255, 255, 255, 0.8)',
+              backdropFilter: 'blur(20px)',
+              boxShadow: '0 20px 60px rgba(160, 140, 115, 0.12)'
             }}
           >
             {/* Stat 1 */}
             <div className="stat-item-container" style={{ display: 'flex', gap: '15px', alignItems: 'center', opacity: 0 }}>
-              <div style={{ backgroundColor: 'rgba(197, 160, 106, 0.1)', color: 'var(--cls-gold)', padding: '12px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Briefcase size={20} />
+              <div style={{ backgroundColor: 'rgba(184, 145, 80, 0.15)', color: 'var(--cls-gold)', padding: '14px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)', border: '1px solid rgba(184, 145, 80, 0.3)' }}>
+                <Briefcase size={22} />
               </div>
               <div style={{ textAlign: 'left' }}>
-                <h3 style={{ fontSize: '1.75rem', fontWeight: 600, color: 'var(--cls-charcoal)', margin: 0 }}>250+</h3>
+                <h3 style={{ fontSize: '1.85rem', fontWeight: 600, color: '#1F1D1A', margin: 0, fontFamily: 'var(--font-display)' }}>250+</h3>
                 <span style={{ fontSize: '0.85rem', color: 'var(--cls-text-muted)', display: 'block' }}>Projects Completed</span>
               </div>
             </div>
             {/* Stat 2 */}
             <div className="stat-item-container" style={{ display: 'flex', gap: '15px', alignItems: 'center', opacity: 0 }}>
-              <div style={{ backgroundColor: 'rgba(197, 160, 106, 0.1)', color: 'var(--cls-gold)', padding: '12px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Award size={20} />
+              <div style={{ backgroundColor: 'rgba(184, 145, 80, 0.15)', color: 'var(--cls-gold)', padding: '14px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)', border: '1px solid rgba(184, 145, 80, 0.3)' }}>
+                <Award size={22} />
               </div>
               <div style={{ textAlign: 'left' }}>
-                <h3 style={{ fontSize: '1.75rem', fontWeight: 600, color: 'var(--cls-charcoal)', margin: 0 }}>10+</h3>
+                <h3 style={{ fontSize: '1.85rem', fontWeight: 600, color: '#1F1D1A', margin: 0, fontFamily: 'var(--font-display)' }}>10+</h3>
                 <span style={{ fontSize: '0.85rem', color: 'var(--cls-text-muted)', display: 'block' }}>Years of Excellence</span>
               </div>
             </div>
             {/* Stat 3 */}
             <div className="stat-item-container" style={{ display: 'flex', gap: '15px', alignItems: 'center', opacity: 0 }}>
-              <div style={{ backgroundColor: 'rgba(197, 160, 106, 0.1)', color: 'var(--cls-gold)', padding: '12px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Sparkles size={20} />
+              <div style={{ backgroundColor: 'rgba(184, 145, 80, 0.15)', color: 'var(--cls-gold)', padding: '14px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)', border: '1px solid rgba(184, 145, 80, 0.3)' }}>
+                <Sparkles size={22} />
               </div>
               <div style={{ textAlign: 'left' }}>
-                <h3 style={{ fontSize: '1.75rem', fontWeight: 600, color: 'var(--cls-charcoal)', margin: 0 }}>50+</h3>
+                <h3 style={{ fontSize: '1.85rem', fontWeight: 600, color: '#1F1D1A', margin: 0, fontFamily: 'var(--font-display)' }}>50+</h3>
                 <span style={{ fontSize: '0.85rem', color: 'var(--cls-text-muted)', display: 'block' }}>Premium Brands</span>
               </div>
             </div>
             {/* Stat 4 */}
             <div className="stat-item-container" style={{ display: 'flex', gap: '15px', alignItems: 'center', opacity: 0 }}>
-              <div style={{ backgroundColor: 'rgba(197, 160, 106, 0.1)', color: 'var(--cls-gold)', padding: '12px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Heart size={20} />
+              <div style={{ backgroundColor: 'rgba(184, 145, 80, 0.15)', color: 'var(--cls-gold)', padding: '14px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)', border: '1px solid rgba(184, 145, 80, 0.3)' }}>
+                <Heart size={22} />
               </div>
               <div style={{ textAlign: 'left' }}>
-                <h3 style={{ fontSize: '1.75rem', fontWeight: 600, color: 'var(--cls-charcoal)', margin: 0 }}>25K+</h3>
+                <h3 style={{ fontSize: '1.85rem', fontWeight: 600, color: '#1F1D1A', margin: 0, fontFamily: 'var(--font-display)' }}>25K+</h3>
                 <span style={{ fontSize: '0.85rem', color: 'var(--cls-text-muted)', display: 'block' }}>Happy Clients</span>
               </div>
             </div>

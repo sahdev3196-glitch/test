@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useStagger } from '../hooks/useStagger';
 import { ShieldCheck, Palette, Sliders, Handshake, Briefcase, Award, Sparkles, Heart } from 'lucide-react';
 import { LuxuryBackgroundMotion } from '../components/ui/LuxuryBackgroundMotion';
+import { TiltCard3D } from '../components/ui/TiltCard3D';
 import { animate } from 'animejs';
 
 export const About: React.FC = () => {
@@ -66,18 +67,30 @@ export const About: React.FC = () => {
         ref={introRef as any}
         style={{ 
           position: 'relative',
-          padding: '8rem 0',
-          backgroundImage: 'linear-gradient(rgba(31, 31, 31, 0.7), rgba(31, 31, 31, 0.7)), url(/assets/images/about_hero.jpg)',
+          padding: '8rem 0 6rem',
+          backgroundImage: 'linear-gradient(rgba(18, 19, 22, 0.75), rgba(18, 19, 22, 0.8)), url(/assets/images/about_hero.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
           color: '#FFFFFF',
-          opacity: 0,
-          borderBottom: '1px solid var(--cls-border-lux)'
+          opacity: 0
         }}
       >
         <div className="container">
-          <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+          <div 
+            className="glass-dark"
+            style={{ 
+              maxWidth: '850px', 
+              margin: '0 auto', 
+              textAlign: 'center',
+              padding: '3.5rem 2.5rem',
+              background: 'rgba(20, 22, 26, 0.7)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              borderRadius: '24px'
+            }}
+          >
             <span className="section-tagline" style={{ color: 'var(--cls-gold)', display: 'block', marginBottom: '1.25rem', letterSpacing: '0.15em' }}>
               ABOUT US
             </span>
@@ -88,7 +101,7 @@ export const About: React.FC = () => {
               Urban Frill is a premium furnishing studio specializing in custom curtains, wallpapers, flooring, and soft furnishings. We blend aesthetics with functionality to craft beautiful spaces.
             </p>
             <p style={{ fontSize: '1.05rem', color: '#D1C7BD', lineHeight: 1.6, fontWeight: 300, margin: 0 }}>
-              Located in the heart of Pune & Mumbai, we consult directly with architects, interior developers, and homeowners to engineer complete soft-furnishing transformations. Our materials are globally sourced, and our dedicated technical teams guarantee clean, exact execution on every site.
+              Located in the heart of Pune, we consult directly with architects, interior developers, and homeowners to engineer complete soft-furnishing transformations. Our materials are globally sourced, and our dedicated technical teams guarantee clean, exact execution on every site.
             </p>
           </div>
         </div>
@@ -98,23 +111,24 @@ export const About: React.FC = () => {
       <section 
         ref={statsRef as any}
         style={{ 
-          backgroundColor: 'var(--cls-soft-beige)', 
-          padding: '3rem 0',
-          borderTop: '1px solid var(--cls-border-lux)',
-          borderBottom: '1px solid var(--cls-border-lux)'
+          padding: '2.5rem 0',
+          position: 'relative',
+          zIndex: 5
         }}
       >
         <div className="container">
           <div 
+            className="glass-panel"
             style={{ 
               display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
-              gap: '2.5rem' 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', 
+              gap: '2rem',
+              padding: '2.25rem 2.5rem'
             }}
           >
             {/* Stat 1 */}
             <div className="about-stat-item" style={{ display: 'flex', gap: '15px', alignItems: 'center', opacity: 0 }}>
-              <div style={{ backgroundColor: 'rgba(197, 160, 106, 0.1)', color: 'var(--cls-gold)', padding: '12px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ backgroundColor: 'rgba(197, 160, 106, 0.15)', color: 'var(--cls-gold)', padding: '12px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)' }}>
                 <Award size={20} />
               </div>
               <div style={{ textAlign: 'left' }}>
@@ -124,7 +138,7 @@ export const About: React.FC = () => {
             </div>
             {/* Stat 2 */}
             <div className="about-stat-item" style={{ display: 'flex', gap: '15px', alignItems: 'center', opacity: 0 }}>
-              <div style={{ backgroundColor: 'rgba(197, 160, 106, 0.1)', color: 'var(--cls-gold)', padding: '12px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ backgroundColor: 'rgba(197, 160, 106, 0.15)', color: 'var(--cls-gold)', padding: '12px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)' }}>
                 <Heart size={20} />
               </div>
               <div style={{ textAlign: 'left' }}>
@@ -134,7 +148,7 @@ export const About: React.FC = () => {
             </div>
             {/* Stat 3 */}
             <div className="about-stat-item" style={{ display: 'flex', gap: '15px', alignItems: 'center', opacity: 0 }}>
-              <div style={{ backgroundColor: 'rgba(197, 160, 106, 0.1)', color: 'var(--cls-gold)', padding: '12px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ backgroundColor: 'rgba(197, 160, 106, 0.15)', color: 'var(--cls-gold)', padding: '12px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)' }}>
                 <Briefcase size={20} />
               </div>
               <div style={{ textAlign: 'left' }}>
@@ -144,7 +158,7 @@ export const About: React.FC = () => {
             </div>
             {/* Stat 4 */}
             <div className="about-stat-item" style={{ display: 'flex', gap: '15px', alignItems: 'center', opacity: 0 }}>
-              <div style={{ backgroundColor: 'rgba(197, 160, 106, 0.1)', color: 'var(--cls-gold)', padding: '12px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ backgroundColor: 'rgba(197, 160, 106, 0.15)', color: 'var(--cls-gold)', padding: '12px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)' }}>
                 <Sparkles size={20} />
               </div>
               <div style={{ textAlign: 'left' }}>
@@ -156,18 +170,18 @@ export const About: React.FC = () => {
         </div>
       </section>
 
-      {/* Values Section (Dark Section) */}
+      {/* Values Section (Light Pastel Glass Section) */}
       <section 
         ref={valuesRef as any}
         className="section-padding"
-        style={{ backgroundColor: '#111111', color: '#FFFFFF' }}
+        style={{ backgroundColor: '#F5F0E6', color: '#1F1D1A', position: 'relative', overflow: 'hidden' }}
       >
         <div className="container">
           <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-            <span className="section-tagline" style={{ color: 'var(--cls-gold)', display: 'block', marginBottom: '0.5rem' }}>
+            <span className="glass-pill" style={{ color: 'var(--cls-gold)', display: 'inline-block', marginBottom: '0.75rem', border: '1px solid rgba(184, 145, 80, 0.35)', background: 'rgba(255, 255, 255, 0.8)' }}>
               OUR VALUES
             </span>
-            <h2 style={{ fontSize: '2.5rem', fontWeight: 300, color: '#FFFFFF', fontFamily: 'var(--font-display)', margin: 0 }}>
+            <h2 style={{ fontSize: '2.5rem', fontWeight: 300, color: '#1F1D1A', fontFamily: 'var(--font-display)', margin: 0 }}>
               What Defines Us
             </h2>
           </div>
@@ -180,30 +194,35 @@ export const About: React.FC = () => {
             }}
           >
             {values.map((val, idx) => (
-              <div 
-                key={idx}
-                className="value-card-item"
-                style={{ 
-                  opacity: 0,
-                  backgroundColor: '#1C1C1C',
-                  border: '1px solid rgba(255, 255, 255, 0.05)',
-                  borderRadius: '12px',
-                  padding: '2.5rem 2rem',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '1.25rem',
-                  textAlign: 'left'
-                }}
-              >
-                <div style={{ color: 'var(--cls-gold)', display: 'inline-flex' }}>
-                  {val.icon}
-                </div>
-                <h3 style={{ color: '#FFFFFF', fontSize: '1.3rem', fontWeight: 400, margin: 0 }}>
-                  {val.title}
-                </h3>
-                <p style={{ color: '#999999', fontSize: '0.9rem', lineHeight: '1.6', margin: 0 }}>
-                  {val.desc}
-                </p>
+              <div key={idx} className="value-card-item" style={{ opacity: 0 }}>
+                <TiltCard3D style={{ height: '100%' }}>
+                  <div 
+                    className="glass-card"
+                    style={{ 
+                      borderRadius: '20px',
+                      padding: '2.5rem 2rem',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '1.25rem',
+                      textAlign: 'left',
+                      height: '100%',
+                      border: '1px solid rgba(184, 145, 80, 0.25)',
+                      background: 'rgba(255, 255, 255, 0.75)',
+                      backdropFilter: 'blur(16px)',
+                      boxShadow: '0 15px 45px rgba(160, 140, 115, 0.12)'
+                    }}
+                  >
+                    <div style={{ color: 'var(--cls-gold)', display: 'inline-flex', transform: 'translateZ(25px)' }}>
+                      {val.icon}
+                    </div>
+                    <h3 style={{ color: '#1F1D1A', fontSize: '1.3rem', fontWeight: 500, margin: 0, fontFamily: 'var(--font-display)', transform: 'translateZ(20px)' }}>
+                      {val.title}
+                    </h3>
+                    <p style={{ color: 'var(--cls-text-muted)', fontSize: '0.9rem', lineHeight: '1.6', margin: 0, transform: 'translateZ(15px)' }}>
+                      {val.desc}
+                    </p>
+                  </div>
+                </TiltCard3D>
               </div>
             ))}
           </div>

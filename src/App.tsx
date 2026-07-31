@@ -1,9 +1,10 @@
 import React from 'react';
-import { HashRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { Header } from './components/ui/Header';
 import { Footer } from './components/ui/Footer';
 import { AppRoutes } from './router/AppRoutes';
 import { PageTransitionWrapper } from './components/ui/PageTransitionWrapper';
+import { FloatingContactWidget } from './components/ui/FloatingContactWidget';
 
 export const App: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ export const App: React.FC = () => {
         <AppRoutes />
       </PageTransitionWrapper>
       <Footer />
+      <FloatingContactWidget />
     </Router>
   );
 };

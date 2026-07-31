@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { LuxuryBackgroundMotion } from '../components/ui/LuxuryBackgroundMotion';
+import { TiltCard3D } from '../components/ui/TiltCard3D';
 import { animate } from 'animejs';
 
 export const Projects: React.FC = () => {
@@ -47,73 +48,73 @@ export const Projects: React.FC = () => {
   const projectsData = [
     {
       title: 'Modern Elegance',
-      city: 'Jaipur',
+      city: 'Koregaon Park, Pune',
       category: 'residential',
       image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=800&q=80'
     },
     {
       title: 'Neutral Harmony',
-      city: 'Delhi',
+      city: 'Kalyani Nagar, Pune',
       category: 'residential',
       image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=800&q=80'
     },
     {
       title: 'Timeless Comfort',
-      city: 'Udaipur',
+      city: 'Baner, Pune',
       category: 'residential',
       image: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80'
     },
     {
       title: 'Earthy Retreat',
-      city: 'Jodhpur',
+      city: 'Kothrud, Pune',
       category: 'residential',
       image: 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=800&q=80'
     },
     {
       title: 'Corporate Office',
-      city: 'Jaipur',
+      city: 'Viman Nagar, Pune',
       category: 'commercial',
       image: '/assets/images/blinds.jpg'
     },
     {
       title: 'Luxe Hotel Suite',
-      city: 'Udaipur',
+      city: 'Boat Club Road, Pune',
       category: 'hospitality',
       image: '/assets/images/hero3.jpg'
     },
     {
       title: 'Warm Minimalism',
-      city: 'Pune',
+      city: 'Model Colony, Pune',
       category: 'residential',
       image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80'
     },
     {
       title: 'Classic Manor',
-      city: 'Mumbai',
+      city: 'Prabhat Road, Pune',
       category: 'residential',
       image: 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80'
     },
     {
       title: 'Art Deco Penthouse',
-      city: 'Delhi',
+      city: 'Hinjewadi, Pune',
       category: 'residential',
       image: 'https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?auto=format&fit=crop&w=800&q=80'
     },
     {
       title: 'Cozy Studio Loft',
-      city: 'Jaipur',
+      city: 'Wakad, Pune',
       category: 'residential',
       image: 'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80'
     },
     {
       title: 'Creative Agency Hub',
-      city: 'Pune',
+      city: 'Hadapsar, Pune',
       category: 'commercial',
       image: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=800&q=80'
     },
     {
       title: 'Boutique Resort Lounge',
-      city: 'Goa',
+      city: 'Pimple Saudagar, Pune',
       category: 'hospitality',
       image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&q=80'
     }
@@ -130,26 +131,6 @@ export const Projects: React.FC = () => {
     if (selectedFilter === 'all') return true;
     return project.category === selectedFilter;
   });
-
-  const handleMouseEnter = (e: React.MouseEvent<HTMLImageElement>) => {
-    const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (isReduced) return;
-    animate(e.currentTarget, {
-      scale: 1.04,
-      duration: 300,
-      easing: 'easeOutQuart'
-    });
-  };
-
-  const handleMouseLeave = (e: React.MouseEvent<HTMLImageElement>) => {
-    const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (isReduced) return;
-    animate(e.currentTarget, {
-      scale: 1,
-      duration: 300,
-      easing: 'easeOutQuart'
-    });
-  };
 
   return (
     <div style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh', backgroundColor: 'var(--cls-warm-white)', paddingTop: '8rem', paddingBottom: '4rem' }}>
@@ -193,13 +174,16 @@ export const Projects: React.FC = () => {
                 padding: '0.75rem 1.5rem',
                 borderRadius: '30px',
                 border: '1px solid',
-                borderColor: isActive ? 'var(--cls-gold)' : 'var(--cls-border-lux)',
-                backgroundColor: isActive ? 'var(--cls-gold)' : 'var(--cls-pure-white)',
+                borderColor: isActive ? 'var(--cls-gold)' : 'rgba(220, 210, 198, 0.4)',
+                backgroundColor: isActive ? 'var(--cls-charcoal)' : 'rgba(255, 255, 255, 0.55)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
                 color: isActive ? '#FFFFFF' : 'var(--cls-charcoal)',
                 fontSize: '0.85rem',
                 fontWeight: 500,
                 cursor: 'pointer',
                 letterSpacing: '0.02em',
+                boxShadow: isActive ? '0 4px 15px rgba(0,0,0,0.15)' : '0 2px 10px rgba(0,0,0,0.03)',
                 transition: 'all 0.3s'
               }}
               onMouseEnter={(e) => {
@@ -210,7 +194,7 @@ export const Projects: React.FC = () => {
               }}
               onMouseLeave={(e) => {
                 if (!isActive) {
-                  e.currentTarget.style.borderColor = 'var(--cls-border-lux)';
+                  e.currentTarget.style.borderColor = 'rgba(220, 210, 198, 0.4)';
                   e.currentTarget.style.color = 'var(--cls-charcoal)';
                 }
               }}
@@ -231,43 +215,48 @@ export const Projects: React.FC = () => {
           }}
         >
           {filteredProjects.slice(0, visibleCount).map((project, idx) => (
-            <div 
-              key={idx}
-              className="projects-page-card"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '1rem',
-                opacity: 0
-              }}
-            >
-              {/* Image outer frame */}
-              <div 
-                style={{
-                  borderRadius: 'var(--border-radius-lux)',
-                  overflow: 'hidden',
-                  aspectRatio: '3/4',
-                  boxShadow: 'var(--shadow-soft)'
-                }}
-              >
-                <img 
-                  src={project.image} 
-                  alt={project.title} 
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'scale(1)', transformOrigin: 'center' }}
-                  loading="lazy"
-                />
-              </div>
-              {/* Details text */}
-              <div style={{ padding: '0.25rem 0', textAlign: 'left' }}>
-                <h4 style={{ fontSize: '1.2rem', fontWeight: 400, color: 'var(--cls-charcoal)', margin: 0 }}>
-                  {project.title}
-                </h4>
-                <span className="editorial-small-label" style={{ fontSize: '0.75rem', color: 'var(--cls-gold)', letterSpacing: '0.1em', marginTop: '0.25rem', display: 'block' }}>
-                  {project.city}
-                </span>
-              </div>
+            <div key={idx} className="projects-page-card" style={{ opacity: 0 }}>
+              <TiltCard3D style={{ height: '100%' }}>
+                <div 
+                  className="glass-card"
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    borderRadius: '18px',
+                    padding: '12px',
+                    border: '1px solid rgba(184, 145, 80, 0.25)',
+                    background: 'rgba(255, 255, 255, 0.75)',
+                    backdropFilter: 'blur(16px)',
+                    boxShadow: '0 15px 45px rgba(160, 140, 115, 0.12)'
+                  }}
+                >
+                  {/* Image outer frame */}
+                  <div 
+                    style={{
+                      borderRadius: '12px',
+                      overflow: 'hidden',
+                      aspectRatio: '3/4',
+                      position: 'relative'
+                    }}
+                  >
+                    <img 
+                      src={project.image} 
+                      alt={project.title} 
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
+                      loading="lazy"
+                    />
+                  </div>
+                  {/* Details text */}
+                  <div style={{ padding: '0.85rem 0.5rem 0.25rem', textAlign: 'left', transform: 'translateZ(20px)' }}>
+                    <h4 style={{ fontSize: '1.2rem', fontWeight: 500, color: '#1F1D1A', margin: 0, fontFamily: 'var(--font-display)' }}>
+                      {project.title}
+                    </h4>
+                    <span className="editorial-small-label" style={{ fontSize: '0.75rem', color: 'var(--cls-gold)', letterSpacing: '0.1em', marginTop: '0.25rem', display: 'block' }}>
+                      {project.city}
+                    </span>
+                  </div>
+                </div>
+              </TiltCard3D>
             </div>
           ))}
         </div>

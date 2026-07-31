@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { LuxuryBackgroundMotion } from '../components/ui/LuxuryBackgroundMotion';
 import { animate } from 'animejs';
+import { useReveal } from '../hooks/useReveal';
 
 // FAQ Accordion Item Component
 interface FAQItemProps {
@@ -89,6 +90,7 @@ export const ContactPage: React.FC = () => {
 
   // Form states
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting]   = useState(false);
 
   useEffect(() => {
     // Set SEO Meta
@@ -97,7 +99,7 @@ export const ContactPage: React.FC = () => {
     if (metaDescription) {
       metaDescription.setAttribute(
         'content',
-        "Get in touch with Urban Frill. Book a free space design consultation, call us, or visit our luxury showroom experience center on Tonk Road, Jaipur."
+        "Get in touch with Urban Frill. Book a free space design consultation, call us, or visit our luxury showroom experience center in Pune."
       );
     }
     window.scrollTo({ top: 0, behavior: 'instant' as any });
@@ -126,48 +128,79 @@ export const ContactPage: React.FC = () => {
     setOpenFAQIndex(openFAQIndex === index ? null : index);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setFormSubmitted(true);
-    setTimeout(() => setFormSubmitted(false), 5000);
+    setIsSubmitting(true);
+
+    try {
+      const formData = new FormData(e.currentTarget);
+      formData.append("access_key", "368b838c-5da8-4762-846f-3761f5fcf244");
+      formData.append("subject", "New Studio Lead - Urban Frill Website");
+      formData.append("from_name", "Urban Frill Lead Form");
+
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        setFormSubmitted(true);
+      } else {
+        alert(result.message || "Form submission failed. Please call us directly.");
+      }
+    } catch (err) {
+      console.error("Form submission error:", err);
+      alert("Submission error. Please check your internet connection.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh', backgroundColor: '#F7F3EE', paddingBottom: '6rem' }}>
       
       {/* Component Specific Style Overrides (Focus, Hover, Zoom, etc.) */}
+      {/* Component Specific Style Overrides (Focus, Hover, Zoom, etc.) */}
       <style>{`
         .premium-input {
           width: 100%;
           padding: 1.1rem 1.4rem;
           border-radius: 12px;
-          border: 1px solid #E8DED3;
-          background-color: #FFFFFF;
+          border: 1px solid rgba(220, 210, 198, 0.4);
+          background-color: rgba(255, 255, 255, 0.65);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
           outline: none;
           font-size: 0.95rem;
           color: #1F1F1F;
           font-family: var(--font-primary);
           font-weight: 300;
-          transition: border-color 0.3s ease, box-shadow 0.3s ease;
+          transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
         }
         .premium-input:focus {
+          background-color: rgba(255, 255, 255, 0.95);
           border-color: #C7A26A !important;
-          box-shadow: 0 0 0 4px rgba(197, 160, 106, 0.12) !important;
+          box-shadow: 0 0 0 4px rgba(197, 160, 106, 0.18) !important;
         }
         
         .choose-card {
-          background-color: #FFFFFF;
-          border: 1px solid #E8DED3;
+          background-color: rgba(255, 255, 255, 0.65);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border: 1px solid rgba(255, 255, 255, 0.7);
           border-radius: 16px;
           padding: 2.75rem 2rem;
           text-align: left;
-          transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+          box-shadow: 0 10px 35px 0 rgba(31, 38, 135, 0.06), inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
+          transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.4s ease, box-shadow 0.4s ease, background-color 0.4s ease;
           cursor: pointer;
         }
         .choose-card:hover {
           transform: translateY(-6px);
+          background-color: rgba(255, 255, 255, 0.85);
           border-color: #C7A26A;
-          box-shadow: var(--shadow-medium);
+          box-shadow: 0 20px 50px 0 rgba(28, 28, 28, 0.1);
         }
 
         .showroom-img-frame {
@@ -176,6 +209,7 @@ export const ContactPage: React.FC = () => {
           box-shadow: var(--shadow-medium);
           height: 480px;
           width: 100%;
+          border: 1px solid rgba(255, 255, 255, 0.7);
         }
         .showroom-img-frame img {
           width: 100%;
@@ -191,9 +225,11 @@ export const ContactPage: React.FC = () => {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          background-color: #1F1F1F;
+          background-color: rgba(31, 31, 31, 0.9);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
           color: #FFFFFF;
-          border: none;
+          border: 1px solid rgba(255, 255, 255, 0.2);
           border-radius: 12px;
           padding: 1.1rem 2.2rem;
           font-weight: 500;
@@ -391,7 +427,7 @@ export const ContactPage: React.FC = () => {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', borderTop: '1px solid #E8DED3', paddingTop: '1.5rem', fontSize: '0.95rem', color: '#6B6B6B' }}>
                       <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                         <Mail size={16} style={{ color: '#C7A26A' }} />
-                        <a href="mailto:hello@urbanfrill.com" style={{ color: '#1F1F1F', textDecoration: 'none' }}>hello@urbanfrill.com</a>
+                        <a href="mailto:urbanfrill1508@gmail.com" style={{ color: '#1F1F1F', textDecoration: 'none' }}>urbanfrill1508@gmail.com</a>
                       </div>
                       <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                         <Clock size={16} style={{ color: '#C7A26A' }} />
@@ -440,6 +476,7 @@ export const ContactPage: React.FC = () => {
                         <input 
                           type="text" 
                           id="fullName" 
+                          name="name"
                           required
                           placeholder="Your full name" 
                           className="premium-input"
@@ -451,6 +488,7 @@ export const ContactPage: React.FC = () => {
                         <input 
                           type="email" 
                           id="emailAddress" 
+                          name="email"
                           required
                           placeholder="Your email address" 
                           className="premium-input"
@@ -465,6 +503,7 @@ export const ContactPage: React.FC = () => {
                         <input 
                           type="tel" 
                           id="phoneNumber" 
+                          name="phone"
                           required
                           placeholder="Your phone number" 
                           className="premium-input"
@@ -475,17 +514,18 @@ export const ContactPage: React.FC = () => {
                         <label htmlFor="interest" style={{ fontSize: '13px', fontWeight: 600, color: '#1F1F1F', letterSpacing: '0.05em' }}>SERVICE INTERESTED IN</label>
                         <select 
                           id="interest" 
+                          name="service"
                           defaultValue="curtains"
                           className="premium-input"
                           style={{ appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%236B6B6B\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpolyline points=\'6 9 12 15 18 9\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1.25rem center', backgroundSize: '16px' }}
                         >
-                          <option value="curtains">Curtains & Drapery</option>
-                          <option value="blinds">Modern Window Blinds</option>
-                          <option value="wallpapers">Premium Wallpapers</option>
-                          <option value="flooring">Flooring Systems</option>
-                          <option value="rugs">Luxury Rugs</option>
-                          <option value="upholstery">Sofa & Fabrics Upholstery</option>
-                          <option value="others">Other Solutions</option>
+                          <option value="Curtains & Drapery">Curtains & Drapery</option>
+                          <option value="Modern Window Blinds">Modern Window Blinds</option>
+                          <option value="Premium Wallpapers">Premium Wallpapers</option>
+                          <option value="Flooring Systems">Flooring Systems</option>
+                          <option value="Luxury Rugs">Luxury Rugs</option>
+                          <option value="Sofa & Fabrics Upholstery">Sofa & Fabrics Upholstery</option>
+                          <option value="Other Solutions">Other Solutions</option>
                         </select>
                       </div>
                     </div>
@@ -495,6 +535,7 @@ export const ContactPage: React.FC = () => {
                       <label htmlFor="messageText" style={{ fontSize: '13px', fontWeight: 600, color: '#1F1F1F', letterSpacing: '0.05em' }}>YOUR MESSAGE</label>
                       <textarea 
                         id="messageText" 
+                        name="message"
                         rows={4}
                         placeholder="Describe your space or project requirements..." 
                         className="premium-input"
@@ -504,10 +545,11 @@ export const ContactPage: React.FC = () => {
 
                     <button 
                       type="submit" 
+                      disabled={isSubmitting}
                       className="btn-book"
-                      style={{ alignSelf: 'flex-start', minWidth: '240px', marginTop: '0.5rem' }}
+                      style={{ alignSelf: 'flex-start', minWidth: '240px', marginTop: '0.5rem', opacity: isSubmitting ? 0.7 : 1, cursor: isSubmitting ? 'wait' : 'pointer' }}
                     >
-                      Book Consultation <ArrowRight size={16} className="arrow-icon" />
+                      {isSubmitting ? 'Sending Request...' : 'Book Consultation'} <ArrowRight size={16} className="arrow-icon" />
                     </button>
                   </form>
                 )}
@@ -757,7 +799,7 @@ export const ContactPage: React.FC = () => {
           <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
             <FAQItem 
               question="Do you provide home visits?"
-              answer="Yes, we offer on-site consultation and measurement services across Jaipur and Pune. Our expert consultants will bring material libraries, fabrics, and swatches directly to your space for accurate matching."
+              answer="Yes, we offer on-site consultation and measurement services across Pune and PCMC. Our expert consultants will bring material libraries, fabrics, and swatches directly to your space for accurate matching."
               isOpen={openFAQIndex === 0}
               onClick={() => handleFAQClick(0)}
             />
@@ -789,34 +831,3 @@ export const ContactPage: React.FC = () => {
 
 export default ContactPage;
 
-// helper scroll reveal hook
-export const useReveal = (duration: number = 800) => {
-  const elementRef = useRef<HTMLElement | null>(null);
-
-  useEffect(() => {
-    const el = elementRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          animate(el, {
-            opacity: [0, 1],
-            translateY: [25, 0],
-            duration: duration,
-            easing: 'easeOutExpo'
-          });
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.02 }
-    );
-
-    observer.observe(el);
-    return () => {
-      if (el) observer.unobserve(el);
-    };
-  }, [duration]);
-
-  return elementRef;
-};

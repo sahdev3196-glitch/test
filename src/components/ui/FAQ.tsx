@@ -116,7 +116,7 @@ export const FAQ: React.FC = () => {
     },
     {
       question: "What areas do you serve?",
-      answer: "We support luxury residential and commercial fit-outs across Pune, Mumbai, and greater Maharashtra. Shipping and remote consultations can be arranged nationwide."
+      answer: "We support luxury residential and commercial fit-outs across Pune and PCMC. Remote consultations can be arranged upon request."
     },
     {
       question: "Can you reupholster my existing furniture?",
