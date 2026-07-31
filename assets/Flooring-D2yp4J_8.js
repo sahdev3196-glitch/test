@@ -1,0 +1,1 @@
+import"./rolldown-runtime-CNC7AqOf.js";import{a as e,l as t}from"./animation-vendor-BzvHpBNU.js";import{L as n}from"./react-vendor-CRkwWSgA.js";import{n as r,t as i}from"./productsData-CzJYnK8x.js";t();var a=e(),o=()=>(0,a.jsx)(r,{data:n().pathname.includes(`pvc-flooring`)?i[`pvc-flooring`]:i[`wooden-flooring`]});export{o as Flooring,o as default};

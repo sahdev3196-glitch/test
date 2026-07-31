@@ -1,0 +1,1 @@
+import"./rolldown-runtime-CNC7AqOf.js";import{a as e,l as t}from"./animation-vendor-BzvHpBNU.js";import{n,t as r}from"./productsData-CzJYnK8x.js";t();var i=e(),a=()=>(0,i.jsx)(n,{data:r.rugs});export{a as Rugs,a as default};
