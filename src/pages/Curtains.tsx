@@ -78,7 +78,7 @@ export const Curtains: React.FC = () => {
 
   const handleWhatsAppClick = () => {
     const message = `Hi Urban Frill, I am interested in custom curtains and would like to discuss my requirements or book a free consult.`;
-    window.open(`https://wa.me/919876543210?text=${encodeURIComponent(message)}`, '_blank');
+    window.open(`https://wa.me/917821085631?text=${encodeURIComponent(message)}`, '_blank');
   };
 
   return (
@@ -319,7 +319,7 @@ export const Curtains: React.FC = () => {
 
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
               <a 
-                href="tel:+919876543210" 
+                href="tel:+917821085631" 
                 className="btn btn-primary"
                 style={{ minWidth: '180px', textTransform: 'none', fontWeight: 500 }}
               >

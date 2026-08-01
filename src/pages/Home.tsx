@@ -75,7 +75,7 @@ export const Home: React.FC = () => {
       slug: 'rugs'
     },
     {
-      title: 'Fabrica',
+      title: 'Upholstery Fabrics',
       desc: 'Luxury fabrics for every detail.',
       image: '/assets/images/showroom.jpg',
       slug: 'upholstery-fabrics'
